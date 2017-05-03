@@ -14,6 +14,11 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+//connect to mongoDB DB
+var mongoose = require('mongoose');
+var mongoDB = 'mongodb://127.0.0.1/caos'
+mongoose.connect(mongoDB);
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
