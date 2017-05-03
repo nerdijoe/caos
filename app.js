@@ -4,6 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const passport = require('passport');
+const Strategy = require('passport-local').Strategy;
+var passwordHash = require('password-hash');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -29,6 +32,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+passport.use(new Strategy(
+  function(username, password, next) {
+    let User = require('./models/user')
+
+    User.findOne( {username: username}, (err, user) => {
+      if(err) next(err);
+
+      if(passwordHash.verify(password, user.password)) {
+        next(null, user)
+      } else {
+        next("User entered wrong username and password");
+      }
+    })
+  }
+));
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
