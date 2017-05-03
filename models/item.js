@@ -3,9 +3,10 @@ var Schema = mongoose.Schema;
 
 var itemSchema = new Schema({
   name: String,
-  price: String,
+  price: Number,
   size: String,
   stock: Number,
+  note: String,
   image: String
 })
 
